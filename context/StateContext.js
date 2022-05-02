@@ -1,8 +1,7 @@
 import {
-    useContext, 
-    createContext, 
-    useState, 
-    useEffect} from 'react';
+  useContext, 
+  createContext, 
+  useState } from 'react';
 
 import { toast } from 'react-hot-toast';
 
@@ -23,8 +22,12 @@ export const StateContext = ({children}) => {
   }
 
   const decrementQty = () => {
-    // if quantity is greater than 1, return quantity - 1 else return 1
-    setQty((qty) => { qty > 1 ? qty - 1 : 1 });
+    // if quantity is greater than 1, return quantity - 1 else return 1    
+    setQty((prevQty) => {
+      if(prevQty - 1 < 1) return 1;
+     
+      return prevQty - 1;
+    });
   }
 
   const addToCart = (product, quantity) => {
@@ -63,31 +66,39 @@ export const StateContext = ({children}) => {
   }
 
   const removeFromCart = (product) => {
+    // find product in cart
     foundProduct = cartItems.find((item) => item._id === product._id);
+    // filter out the product from cart and only display items that DONT match the product id
     const newCartItems = cartItems.filter((item) => item._id !== product._id);
+    // update total price and quantity
     setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity);
     setTotalQuantity((prevTotalQuantity) => prevTotalQuantity - foundProduct.quantity);
+    // update cart
     setCartItems(newCartItems);
-
   }
 
   const updateCartItemQty = (id, value) => {
+    // find product in cart
     foundProduct = cartItems.find((item) => item._id === id);
+    // find the index of the product in cart
     index = cartItems.findIndex((product) => product._id === id);
+    // set newCartItems as filter out products that don't match the id 
     const newCartItems = cartItems.filter((item) => item._id !== id);
 
     if (value === 'increment') {
-      
+      // 1) spreads newCartItems into a new array 2) spreads the foundProduct into the new array 3) adds the quantity
       setCartItems([...newCartItems, {...foundProduct, quantity: foundProduct.quantity + 1 }]);
+      // update total price and quantity
       setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
       setTotalQuantity((prevTotalQuantity) => prevTotalQuantity + 1);
     } else if (value === 'decrement') {
       if(foundProduct.quantity > 1) {
+        // 1) spreads newCartItems into a new array 2) spreads the foundProduct into the new array 3) subtracts the quantity
         setCartItems([...newCartItems, {...foundProduct, quantity: foundProduct.quantity - 1 }]);
+        // update total price and quantity
         setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
         setTotalQuantity((prevTotalQuantity) => prevTotalQuantity - 1);
       }
-
     }
   }
 
@@ -110,6 +121,7 @@ export const StateContext = ({children}) => {
         setTotalQuantity
       }}
     >
+      {/* pass down all the components in our app found in _app.tsx */}
       {children} 
     </Context.Provider>
   )

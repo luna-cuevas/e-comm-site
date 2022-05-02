@@ -5,14 +5,14 @@ import Footer from './Footer'
 
 const Layout = ({children}) => {
   return (
-    <div className='layout'>
+    <div className='p-10'>
       <Head>
         <title>Audio Heaven</title>
       </Head>   
       <header>
         <NavBar />
       </header>
-      <main className='main-container'>
+      <main className='md:max-w-[1400px] m-auto w-full'>
         {children}  
       </main>
       <footer>

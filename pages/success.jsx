@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import Link from 'next/link'
 import { BsBagCheckFill } from 'react-icons/bs'
 import { useStateContext } from '../context/StateContext'
@@ -8,11 +7,13 @@ import { runFireworks } from '../lib/utils'
 const Success = () => {
   const { setCartItems, setTotalPrice, setTotalQuantity } = useStateContext()
 
+  // After successful purchase, clear the cart and reset the total price and quantity to 0
   useEffect(() => {
     localStorage.clear();
     setCartItems([]);
     setTotalPrice(0);
     setTotalQuantity(0);
+    // run fireworks animation
     runFireworks();
   }, [])
 
