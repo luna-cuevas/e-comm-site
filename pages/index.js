@@ -4,9 +4,11 @@ import { client } from '../lib/client'
 const Home = ({products, bannerData}) => {
   return (
     <div className=''>
-      <HeroBanner heroBanner={ bannerData.length && bannerData[0] } />
-      <div className='h-screen overflow-hidden'>
-       <img src="/witch-bg.jpg" className='-z-10 md:w-screen absolute top-0 left-0 opacity-50' alt="" />
+      <div className='flex h-screen'>
+        <HeroBanner heroBanner={ bannerData.length && bannerData[0] } />
+        <div className='-z-10 absolute top-0 left-0 h-screen overflow-hidden bg-black'>
+          <img src="/witch-bg.jpg" className=' md:w-screen opacity-50' alt="" />
+        </div>
       </div>
       <div className='text-center my-10 mx-0 text-[#324d67]'>
         <h2  className='text-[40px] font-extrabold'>Beset Selling Products</h2>

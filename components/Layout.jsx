@@ -5,13 +5,11 @@ import Footer from './Footer'
 
 const Layout = ({children}) => {
   return (
-    <div className='layout'>
+    <div className='overflow-hidden font-["Montserrat"]'>
       <Head>
         <title>Luna's Cauldron</title>
       </Head>  
-      <header>
-        <NavBar />
-      </header>
+      <NavBar />
       <main className='main-container'>
         {children}  
       </main>
