@@ -1,18 +1,16 @@
 import React from 'react'
 import Head from 'next/head'
-import NavBar from './NavBar'
 import Footer from './Footer'
+import NavBar from './NavBar'
 
-const Layout = ({children}) => {
+const Layout = ({children} ) => {
   return (
-    <div className='layout'>
+    <div className='overflow-hidden font-["Montserrat"]'>
       <Head>
-        <title>Audio Heaven</title>
-      </Head>   
-      <header>
-        <NavBar />
-      </header>
-      <main className='main-container'>
+        <title>Luna's Cauldron</title>
+      </Head> 
+      {/* <NavBar navData={navData} subCategoryData={subCategoryData} /> */}
+      <main>
         {children}  
       </main>
       <footer>
