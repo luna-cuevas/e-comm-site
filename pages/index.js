@@ -1,20 +1,20 @@
-import {Product, FooterBanner, HeroBanner} from '../components/index'
+import { Product, FooterBanner, HeroBanner, NavBar } from '../components/index'
 import { client } from '../lib/client'
 
-const Home = ({products, bannerData}) => {
+const Home = ({products, bannerData, navData, subCategoryData}) => {
   return (
-    <div className=''>
+    <div>
+      <NavBar navData={navData} subCategoryData={subCategoryData} />
       <div className='flex h-screen'>
         <HeroBanner heroBanner={ bannerData.length && bannerData[0] } />
         <div className='-z-10 absolute top-0 left-0 h-screen overflow-hidden bg-black'>
           <img src="/witch-bg.jpg" className=' md:w-screen opacity-50' alt="" />
         </div>
       </div>
-      <div className='text-center my-10 mx-0 text-[#324d67]'>
-        <h2  className='text-[40px] font-extrabold'>Beset Selling Products</h2>
-        <p className='text-base font-bold'>Speakers of many variations</p>
+      <div className='mx-0 my-10 text-center'>
+        <h2  className='text-[40px] '>Our Best Sellers</h2>
       </div>
-      <div className='products-container'>
+      <div className='flex flex-wrap justify-center mt-5 w-full max-w-[1400px] m-auto'>
         {products?.map((product) => <Product key={product._id} product={product} />)}
       </div>
       <FooterBanner footerBanner={bannerData.length && bannerData[0]} />
@@ -22,13 +22,29 @@ const Home = ({products, bannerData}) => {
   )
 }
 
+// fetching data from Sanity using a GROQ request and then exporting those props to my home components.
 export const getServerSideProps = async () => {
-  const query = '*[_type == "product"]';
-  const products = await client.fetch(query);
-  const bannerQuery = '*[_type == "banner"]';
-  const bannerData = await client.fetch(bannerQuery);
+  const products = await client.fetch('*[_type == "product"][0...8]');
+  const bannerData = await client.fetch('*[_type == "banner"]');
+  const navData = await client.fetch('*[_type == "nav"]{title}');
+  // I would like to refactor this in the future to be more DRY.
+  const subCategoryData = await client.fetch(`
+    *[_type == "nav"] {
+      title,
+      navItem[] {
+        title,
+        itemAndLink {
+          link[]{
+            subCategory,
+            navItemUrl
+          }
+        }
+      }
+    }
+  `);
+
   return {
-    props:{products, bannerData}
+    props:{products, bannerData, navData, subCategoryData}
   }
 }
 

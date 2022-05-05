@@ -1,7 +1,7 @@
 import React, {useRef} from 'react'
 import Link from 'next/link'
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineShopping, } from 'react-icons/ai'
-import {TiDeleteOutline } from 'react-icons/ti'
+import { TiDeleteOutline } from 'react-icons/ti'
 import toast from 'react-hot-toast'
 import { useStateContext } from '../context/StateContext'
 import { urlFor } from '../lib/client'
@@ -9,87 +9,97 @@ import getStripe from  '../lib/getStripe';
 
 const Cart = () => {
   const cartRef = useRef()
-  const { totalPrice, totalQuantity, cartItems, setShowCart, updateCartItemQty, removeFromCart } = useStateContext()
-  
+  const { totalPrice, totalQuantity, cartItems, setShowCart, updateCartItemQty, removeFromCart, showCart } = useStateContext()
+
   const handleCheckout = async () => {
+    // initialize stripe
     const stripe = await getStripe();
+    // attempt to connect to stripe API
+    try {
+      const response = await fetch('/api/stripe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartItems),
+      });
 
-    const response = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cartItems),
-    });
+      const data = await response.json();
+      stripe.redirectToCheckout({ sessionId: data.id });
+      console.log(response.statusCode === 500);
 
-    if(response.statusCode === 500) return;
-    
-    const data = await response.json();
-
+    } catch(error) {
+      console.log(error)
+    }
+    // loading screen in case connection is slow
     toast.loading('Redirecting...');
 
-    stripe.redirectToCheckout({ sessionId: data.id });
   }
   
   return (
-    <div className='cart-wrapper' ref={cartRef}>
-      <div className='cart-container'>
-        <button type='button' className='cart-heading' onClick={() => setShowCart(false)}>
+    <div className={`${showCart ? 'right-0' : 'right-[-100%]'} text-white fixed top-0 z-[100] transition-all duration-500 ease-in-out`} ref={cartRef}>
+      <div className='h-screen w-[415px] md:w-[600px] bg-[#1c1b1b] md:py-[40px] md:px-[10px] p-1 relative'>
+        <button type='button' className='mt-[35px] md:mt-0 flex items-center font-[18px] cursor-pointer gap-[2px] ml-[10px] border-none bg-transparent' onClick={() => setShowCart(false)}>
           <AiOutlineLeft />
-          <span className='heading'>Your Cart</span>
-          <span className='cart-num-items'>{totalQuantity} items</span>
+          <span className='ml-[10px]'>Your Cart</span>
+          <span className='ml-[10px] text-[#f02d34]'>{totalQuantity} items</span>
         </button>
+        {/* Cart Empty */}
         {cartItems.length < 1 && (
-          <div className='empty-cart'>
+          <div className='m-10 text-center'>
             <AiOutlineShopping className='m-auto' size={150} />
-            <h3>Your shopping bag is empty</h3>
+            <h3 className='font-bold text-[20px]'>Your shopping bag is empty</h3>
             <Link href='/'>
               <button
                 type='button'
                 onClick={() => setShowCart(false)}
-                className='btn'
+                className='bg-[#745da7] w-full py-[14px] px-[28px] hover:scale-110 transition-all duration-300 rounded-xl mt-10 md:max-w-[350px]'
               >
                 Continue Shopping
               </button>
             </Link>
           </div>
         )}
-        <div className='product-container'>
+        {/* Cart Items Present */}
+        <div className='max-h-3/4 md:mt-3 px-2 py-5 mt-2 text-white'>
           {cartItems.length >= 1 && cartItems.map((item) => (
-            <div className='product' key={item._id}>
-              <img src={urlFor(item?.image[0])} className='cart-product-image' alt="" />
-              <div className='item-desc'>
-                <div className='flex top'>
-                    <h5>
+            <div className='flex gap-[30px] p-5' key={item._id}>
+              <img src={urlFor(item?.image[0])} className='h-1/4 w-1/4 md:h-[150px] md:w-[180px] bg-[#ebebeb] rounded-2xl' alt="" />
+              <div>
+                <div className='flex justify-between w-[200px] md:w-[350px] text-white'>
+                    <h5 className=''>
                       {item.name}
                     </h5>
                     <h4>$ {item.price}</h4>
                 </div>
-                <div className='flex bottom'>
-                  <div className>
-                    <p className="!w-fit quantity-desc flex">
-                      <span className="minus m-auto" onClick={() => updateCartItemQty(item._id, 'decrement')}><AiOutlineMinus /></span>
-                      <span className="num">{item.quantity}</span>
-                      <span className="plus m-auto" onClick={() => updateCartItemQty(item._id, 'increment')}><AiOutlinePlus /></span>
+                <div className='flex mt-[30px] justify-between md:mt-[60px]'>
+                  <div>
+                    <p className="w-fit  border-[1px] p-1.5 text-base border-gray-200 flex">
+                      <span className="md:py-2.5 md:px-3 px-2 cursor-pointer m-auto" onClick={() => updateCartItemQty(item._id, 'decrement')}><AiOutlineMinus /></span>
+                      <span className="md:px-3 md:py-3 px-2 m-auto cursor-pointer">{item.quantity}</span>
+                      <span className="md:py-2.5 md:px-3 px-2 cursor-pointer m-auto" onClick={() => updateCartItemQty(item._id, 'increment')}><AiOutlinePlus /></span>
                     </p>
                   </div>
-                  <button type='button' className='remove-item' onClick={() => removeFromCart(item)}>
+                  <button type='button' className='text-[24px] text-[#f02d34] cursor-pointer bg-transparent' onClick={() => removeFromCart(item)}>
                     <TiDeleteOutline />
                   </button>
                 </div>
               </div>
             </div>
           ))}
-
         </div>
+        {/* Order Details */}
         {cartItems.length >= 1 && (
-          <div className='cart-bottom'>
-            <div className='total'>
+          <div className='absolute bottom-3 right-1 w-full p-7 md:py-7 md:px-[65px]'>
+            <div className='flex justify-between text-[22px]'>
               <h3>Subtotal: </h3>
               <h3>${totalPrice}</h3>
             </div>
-            <div className='btn-container'>
-              <button type='button' className='btn' onClick={handleCheckout}>
+            <div className='w-[350px] m-auto'>
+              <button type='button'
+                className='bg-[#745da7] w-full py-[14px] px-[28px] hover:scale-110 transition-all duration-300 rounded-xl mt-10 md:max-w-[350px]' 
+                onClick={handleCheckout}
+              >
                 Pay with Stripe
               </button>
             </div>

@@ -1,17 +1,17 @@
 export default {
     name: "subCategoryItemLink",
-    type: "object",
+    type: "document",
     title: "subCategoryItemLink",
     fields: [
       {
-        name: "SubCategory",
+        name: "subCategory",
         type: "string",
-        title: "Sub-category links",
+        title: "Sub Category",
       },
       {
         name: "navItemUrl",
-        type: "link",
-        title: "Nav Item URL"
+        type: "string",
+        title: "Link URL",
       },
     ]
   };

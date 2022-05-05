@@ -2,30 +2,25 @@ import React from 'react'
 import Link from 'next/link'
 import { urlFor } from '../lib/client'
 
-const FooterBanner = ({footerBanner: {discount, largeText1, largeText2, saleTime, smallText, midText, desc, product, buttonText, image }}) => {
+const FooterBanner = ( { footerBanner: { midText, product, buttonText } } ) => {
   return (
-    <div className='footer-banner-container'>
-      <div className='banner-desc'>
-        <div className='left'>s
-          <p>{discount}</p>
-          <h3>{largeText1}</h3>
-          <h3>{largeText2}</h3>
-          <p>{saleTime}</p>
-
+    <div className='py-[100px] px-[40px] h-[400px] bg-[#745da7] rounded-2xl relative text-white w-full mt-[120px]'>
+      <div className='flex justify-between'>
+        <div>
+          <h1 className='text-3xl font-bold'>Luna's Cauldron</h1>
         </div>
-        <div className='right'>
-          <p>{smallText}</p>
-          <h3>{midText}</h3>
-          <p>{desc}</p>
+        <div className='leading-[1.4]'>
+          <h3 className='text-[60px] font-bold'>{midText}</h3>
+          <p className='text-[18px]'>Lorem ipsum dolor sit amet.</p>
           <Link href={`/products/${product}`}>
-            <button type='button'>
+            <button 
+              type='button'
+              className='hover:bg-purple-800 transition-all duration-300 rounded-2xl p-3 mt-5 bg-[#1c1b1b]'
+            >
               {buttonText}
             </button>
           </Link>
         </div>
-
-        <img src={urlFor(image)} className='footer-banner-image' alt="" />
-
       </div>
     </div>
   )

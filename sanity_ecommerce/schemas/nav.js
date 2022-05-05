@@ -1,7 +1,7 @@
 export default {
     name: "nav",
     type: "document",
-    title: "Navigation",
+    title: "nav",
     fields: [
       {
         name: "title",
@@ -14,10 +14,10 @@ export default {
         title: "Id"
       },
       {
-        name: "navItems",
+        name: "navItem",
         type: "array",
         title: "Navigation items",
-        of: [{ type: "navItem" }]
+        of: [{ type: "navItem", _ref: "navItem" }]
       },
     ]
   };

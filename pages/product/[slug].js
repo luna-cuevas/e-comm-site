@@ -1,15 +1,15 @@
-import React from 'react'
 import { client, urlFor } from '../../lib/client'
 import { AiOutlineStar, AiOutlineMinus, AiOutlinePlus, AiFillStar } from 'react-icons/ai'
 import Product from '../../components/Product'
 import { useState } from 'react'
-import {useStateContext} from '../../context/StateContext'
+import { useStateContext } from '../../context/StateContext'
+import { NavBar } from '../../components'
 
-const ProductDetails = ({ product, products }) => {
+const ProductDetails = ({ product, products, navData, subCategoryData }) => {
+  
+  const {decrementQty, incrementQty, qty, addToCart, setShowCart} = useStateContext()
   const { image, name, details, price } = product;
   const [index, setIndex] = useState(0)
-
-  const {decrementQty, incrementQty, qty, addToCart, setShowCart} = useStateContext()
 
   const handleBuyNow = () => {
     addToCart(product, qty);
@@ -18,6 +18,7 @@ const ProductDetails = ({ product, products }) => {
 
   return (
     <div>
+      <NavBar navData={navData} subCategoryData={subCategoryData} />
       <div className='product-detail-container justify-center'>
         <div>
           <div className='image-container'>
@@ -55,7 +56,7 @@ const ProductDetails = ({ product, products }) => {
           <p className="price">${price}</p>
           <div className="quantity">
             <h3>Quantity:</h3>
-            <p className="quantity-desc  flex">
+            <p className="quantity-desc flex">
               <span className="minus m-auto" onClick={decrementQty}><AiOutlineMinus /></span>
               <span className="num">{qty}</span>
               <span className="plus m-auto" onClick={incrementQty}><AiOutlinePlus /></span>
@@ -110,8 +111,25 @@ export const getStaticProps = async ({ params: { slug } }) => {
   const product = await client.fetch(query);
   const products = await client.fetch(productsQuery);
 
+  const navData = await client.fetch('*[_type == "nav"]{title}');
+  // I would like to refactor this in the future to be more DRY.
+  const subCategoryData = await client.fetch(`
+    *[_type == "nav"] {
+      title,
+      navItem[] {
+        title,
+        itemAndLink {
+          link[]{
+            subCategory,
+            navItemUrl
+          }
+        }
+      }
+    }
+  `);
+
   return {
-    props:{ products, product }
+    props:{ products, product, navData, subCategoryData }
   }
 }
 
