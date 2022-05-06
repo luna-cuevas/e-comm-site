@@ -3,7 +3,7 @@ import { AiOutlineShopping } from 'react-icons/ai'
 import { Cart } from './'
 import { useStateContext } from '../context/StateContext'
 
-const NavBar = ( { navData, subCategoryData } ) => {
+const NavBar = ( { navData, subCategoryData, textColor } ) => {
   const { showCart, setShowCart, totalQuantity } = useStateContext();
   const [mobSlider, setMobSlider] = useState(false);
   const [mobileNav,  setMobileNav] = useState(false);
@@ -11,7 +11,7 @@ const NavBar = ( { navData, subCategoryData } ) => {
   const mainCategories = navData.map(item => item.title);
 
   return (
-    <nav className="flex px-2 group h-[100px] text-white bg-transparent hover:text-black hover:bg-[#c6c3d6] transition-[background] duration-500 relative">
+    <nav className={`flex px-2 h-[80px] border-b-2 border-gray-700 ${textColor} bg-transparent hover:text-black hover:bg-[#c6c3d6] transition-[background] duration-500 relative`}>
       {/* <--------------------- Desktop Menu ---------------------> */}
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         {/* Logo and title -- Left */}
