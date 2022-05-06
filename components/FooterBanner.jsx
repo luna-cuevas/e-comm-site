@@ -4,7 +4,7 @@ import { urlFor } from '../lib/client'
 
 const FooterBanner = ( { footerBanner: { midText, product, buttonText } } ) => {
   return (
-    <div className='py-[100px] px-[40px] h-[400px] bg-[#745da7] rounded-2xl relative text-white w-full mt-[120px]'>
+    <div className='py-[100px] px-[40px] h-[400px] bg-[#6b5d8b] rounded-2xl relative text-white w-full mt-[120px]'>
       <div className='flex justify-between'>
         <div>
           <h1 className='text-3xl font-bold'>Luna's Cauldron</h1>

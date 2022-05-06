@@ -21,11 +21,16 @@ const Cart = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        // send our cart items to strip api to create a session
         body: JSON.stringify(cartItems),
       });
 
+      // collect and parse response
       const data = await response.json();
+
+      // redirect to stripe checkout page using session id from response
       stripe.redirectToCheckout({ sessionId: data.id });
+      
       console.log(response.statusCode === 500);
 
     } catch(error) {
@@ -65,12 +70,13 @@ const Cart = () => {
           {cartItems.length >= 1 && cartItems.map((item) => (
             <div className='flex gap-[30px] p-5' key={item._id}>
               <img src={urlFor(item?.image[0])} className='h-1/4 w-1/4 md:h-[150px] md:w-[180px] bg-[#ebebeb] rounded-2xl' alt="" />
-              <div>
+              <div className='justify-evenly h-fit flex flex-col'>
                 <div className='flex justify-between w-[200px] md:w-[350px] text-white'>
                     <h5 className=''>
                       {item.name}
                     </h5>
                     <h4>$ {item.price}</h4>
+
                 </div>
                 <div className='flex mt-[30px] justify-between md:mt-[60px]'>
                   <div>

@@ -24,7 +24,11 @@ export const StateContext = ({children}) => {
 
   const decrementQty = () => {
     // if quantity is greater than 1, return quantity - 1 else return 1
-    setQty((qty) => { qty > 1 ? qty - 1 : 1 });
+    setQty((prevQty) => {
+      if(prevQty - 1 < 1) return 1;
+     
+      return prevQty - 1;
+    });  
   }
 
   const addToCart = (product, quantity) => {
@@ -35,9 +39,8 @@ export const StateContext = ({children}) => {
     setTotalPrice((totalPrice) => totalPrice + product.price * quantity);
     setTotalQuantity((totalQuantity) => totalQuantity + quantity);
 
-    // if product does not exist in cart, add product to cart
+    // if product exists in cart, update quantity
     if (checkCart) {
-
       // update quantity
       const newCartItems = cartItems.map((item) => {
         //checks if product id matches the item we're adding
@@ -48,16 +51,13 @@ export const StateContext = ({children}) => {
             quantity: item.quantity + quantity,
           }
       })
-
       // update cart
       setCartItems(newCartItems);
     } else  {
-
-      // if product already exists, update quantity
+      // if product does not exists, add to cart 
       product.quantity = quantity;
       setCartItems([...cartItems, {...product}]);
     }
-
     // display success message
     toast.success(`${qty} ${product.name} added to cart`);
   }
@@ -107,7 +107,7 @@ export const StateContext = ({children}) => {
         removeFromCart,
         setCartItems,
         setTotalPrice,
-        setTotalQuantity
+        setTotalQuantity,
       }}
     >
       {children} 
