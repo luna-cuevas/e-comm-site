@@ -28,7 +28,7 @@ const Carousel = ({ children }) => {
       if (!paused) {
         updateIndex(activeIndex + 1);
       }
-    }, 3000);
+    }, 5000);
 
     return () => {
       if (interval) {
@@ -61,14 +61,14 @@ const Carousel = ({ children }) => {
         <button
           onClick={() => {
             updateIndex(activeIndex - 1);
-          }}
+          }}  
         >
           Prev
         </button>
         {React.Children.map(children, (child, index) => {
           return (
             <button
-              className={`${index === activeIndex ? "active" : ""}`}
+              className={`${index === activeIndex ? "text-black rounded-xl transition-all duration-400 ease-in-out px-4 bg-[#ebb3ff]" : ""}`}
               onClick={() => {
                 updateIndex(index);
               }}
@@ -78,6 +78,7 @@ const Carousel = ({ children }) => {
           );
         })}
         <button
+          className=""
           onClick={() => {
             updateIndex(activeIndex + 1);
           }}
