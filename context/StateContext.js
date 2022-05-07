@@ -15,8 +15,15 @@ export const StateContext = ({children}) => {
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [qty, setQty] = useState(1);
 
+  // useEffect(()=>{
+  //   localStorage.setItem('cart', cartItems)
+  //   console.log(cartItems)
+  // },[cartItems]);
+
+  // console.log(cartItems)
+
+
   let foundProduct;
-  let index;
 
   const incrementQty = () => {
     setQty((qty) => qty + 1);
@@ -43,14 +50,17 @@ export const StateContext = ({children}) => {
     if (checkCart) {
       // update quantity
       const newCartItems = cartItems.map((item) => {
-        //checks if product id matches the item we're adding
-        if (item._id === product._id) 
-          //if id's match, then we update the quantity
+        //checks if product id matches the item we're adding, if so, update quantity
+        if (item._id === product._id){ 
           return {
             ...item,
             quantity: item.quantity + quantity,
           }
+        }
+        // if product id doesn't match, return item without updating
+        return item;
       })
+
       // update cart
       setCartItems(newCartItems);
     } else  {
@@ -65,29 +75,32 @@ export const StateContext = ({children}) => {
   const removeFromCart = (product) => {
     foundProduct = cartItems.find((item) => item._id === product._id);
     const newCartItems = cartItems.filter((item) => item._id !== product._id);
+
     setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity);
     setTotalQuantity((prevTotalQuantity) => prevTotalQuantity - foundProduct.quantity);
     setCartItems(newCartItems);
-
   }
 
   const updateCartItemQty = (id, value) => {
-    foundProduct = cartItems.find((item) => item._id === id);
-    index = cartItems.findIndex((product) => product._id === id);
-    const newCartItems = cartItems.filter((item) => item._id !== id);
+    // First find the product in the cart
+    foundProduct = cartItems.find((item) => item._id === id)
+    // Copy the current cart array
+    const newCartItems = cartItems;
 
-    if (value === 'increment') {
-      
-      setCartItems([...newCartItems, {...foundProduct, quantity: foundProduct.quantity + 1 }]);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
-      setTotalQuantity((prevTotalQuantity) => prevTotalQuantity + 1);
-    } else if (value === 'decrement') {
-      if(foundProduct.quantity > 1) {
-        setCartItems([...newCartItems, {...foundProduct, quantity: foundProduct.quantity - 1 }]);
-        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
-        setTotalQuantity((prevTotalQuantity) => prevTotalQuantity - 1);
+    if(value === 'increment') {
+      // If click value is increment, increment quantity by 1
+      newCartItems.map((item) => (item._id === id) && (item.quantity = foundProduct.quantity + 1));
+      setCartItems([...newCartItems]);
+      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
+      setTotalQuantity(prevTotalQuantity => prevTotalQuantity + 1)
+    } else if(value === 'decrement') {
+      if (foundProduct.quantity > 1) {
+        // If click value is decrement, and quantity is greater than 1, increment quantity by 1
+        newCartItems.map((item) => (item._id === id) && (item.quantity = foundProduct.quantity - 1));
+        setCartItems([...newCartItems]);
+        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
+        setTotalQuantity(prevTotalQuantity => prevTotalQuantity - 1)
       }
-
     }
   }
 
