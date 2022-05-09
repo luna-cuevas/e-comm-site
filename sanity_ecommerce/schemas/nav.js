@@ -17,7 +17,7 @@ export default {
         name: "navItem",
         type: "array",
         title: "Navigation items",
-        of: [{ type: "navItem", _ref: "navItem" }]
+        of: [{ type: "navItem" }]
       },
     ]
   };
