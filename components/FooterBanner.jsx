@@ -10,7 +10,7 @@ const FooterBanner = ( { footerBanner: { bannerText, product, productTitle, pric
         </div>
         <div className='leading-[1.4] flex flex-col m-auto text-center justify-center md:w-1/3'>
           <h3 className='text-[20px] mb-5 font-bold'>Product of the Month</h3>
-          <img src={urlFor(image)} alt="" className="h-[300px] bg-black m-auto w-fit"  />
+          <img loading='lazy' src={urlFor(image)} alt="" className="h-[300px] bg-black m-auto w-fit"  />
           <div className='flex items-center justify-between w-[200px] m-auto'>
             <h1 className='text-[18px] my-6'>{productTitle}</h1>
             <p>${price}</p>

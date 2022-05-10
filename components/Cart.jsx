@@ -102,9 +102,9 @@ const Cart = () => {
               <h3>Subtotal: </h3>
               <h3>${totalPrice}</h3>
             </div>
-            <div className='w-[350px] m-auto'>
+            <div className='flex m-auto'>
               <button type='button'
-                className='bg-[#745da7] w-full py-[14px] px-[28px] hover:scale-110 transition-all duration-300 rounded-xl mt-10 md:max-w-[350px]' 
+                className='bg-[#745da7] w-full py-[14px] px-[28px] hover:scale-110 m-auto transition-all duration-300 rounded-xl mt-10 md:max-w-[350px]' 
                 onClick={handleCheckout}
               >
                 Pay with Stripe

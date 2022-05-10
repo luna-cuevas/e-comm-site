@@ -1,17 +1,19 @@
+import Image from 'next/image'
 import { Product, FooterBanner, HeroBanner, NavBar, ProductsBanner, AboutUsBlurb } from '../components/index'
 import { client, urlFor } from '../lib/client'
 
 const Home = ( { products, heroBanner, aboutUsBanner, footerBanner, navData, subCategoryData } ) => {
+console.log(urlFor(heroBanner[0].bgImageMobile))
   return (
     <div>
       <NavBar textColor={'text-white'} navData={navData} subCategoryData={subCategoryData} />
       <div className='flex h-screen overflow-hidden'>
         <HeroBanner heroBanner={ heroBanner.length && heroBanner[0] } />
         <div className='-z-10 md:block absolute top-0 hidden w-screen h-screen overflow-hidden bg-black'>
-          <img src={urlFor(heroBanner[0].bgImageDesktop)} className='min-w-[1440px] w-screen opacity-50' alt="" />
+          <Image layout='fill' priority src={urlFor(heroBanner[0].bgImageDesktop)} className='min-w-[1440px] w-screen opacity-50' alt="" />
         </div>
-        <div className='-z-10 md:hidden absolute top-0 h-screen overflow-hidden bg-black'>
-          <img src={urlFor(heroBanner[0].bgImageMobile)} className='min-w-max sm:w-screen h-screen opacity-50' alt="" />
+        <div className='-z-10 md:hidden min-w-max absolute top-0 w-screen h-screen overflow-hidden bg-black'>
+          <Image layout='fill' blur loading='lazy' src={urlFor(heroBanner[0].bgImageMobile)} className='opacity-50' alt="" />
         </div>
       </div>
       <div className='mx-0 my-10 text-center text-white'>
