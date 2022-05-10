@@ -27,7 +27,7 @@ const ProductDetails = ({ product, products, navData, subCategoryData }) => {
   return (
     <div className='mt-[80px] md:mt-[100px] relative text-white'>
       <div className='w-screen h-[80px] md:h-[80px] bg-[#c6c3d6] fixed top-0 z-20'>
-        <NavBar textColor={'text-black'}  navData={navData} subCategoryData={subCategoryData} />
+        <NavBar textColor={'text-black'} navData={navData} subCategoryData={subCategoryData} />
       </div>
       {/* Mobile product image slider */}
       <Carousel>
@@ -120,7 +120,7 @@ export const getStaticProps = async ({ params: { slug } }) => {
   const product = await client.fetch(query);
   const products = await client.fetch(productsQuery);
 
-  const navData = await client.fetch('*[_type == "nav"]{title}');
+  const navData = await client.fetch('*[_type == "nav"]{title, linkUrl, navTile}');
   const subCategoryData = await client.fetch(`
     *[_type == "nav"] {
       title,

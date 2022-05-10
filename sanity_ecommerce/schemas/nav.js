@@ -14,10 +14,20 @@ export default {
         title: "Id"
       },
       {
+        name: "linkUrl",
+        type: "string",
+        title: "URL Link"
+      },
+      {
         name: "navItem",
         type: "array",
         title: "Navigation items",
         of: [{ type: "navItem" }]
+      },
+      {
+        name: "navTile",
+        type: "image",
+        title: "Navigation Tile?"
       },
     ]
   };

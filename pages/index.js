@@ -1,5 +1,4 @@
-import AboutUsBlurb from '../components/AboutUsBlurb'
-import { Product, FooterBanner, HeroBanner, NavBar, ProductsBanner } from '../components/index'
+import { Product, FooterBanner, HeroBanner, NavBar, ProductsBanner, AboutUsBlurb } from '../components/index'
 import { client, urlFor } from '../lib/client'
 
 const Home = ( { products, heroBanner, aboutUsBanner, footerBanner, navData, subCategoryData } ) => {
@@ -20,13 +19,13 @@ const Home = ( { products, heroBanner, aboutUsBanner, footerBanner, navData, sub
       </div>
       {/* Where the top 8 best selling products are featured */}
       <div className='flex flex-wrap justify-center mt-5 w-full max-w-[1400px] m-auto'>
-        {products?.map((product) => 
+        {products?.slice(0, 8).map((product) => 
           <Product key={product._id} product={product} />
         )}
       </div>
       {/* Best selling categories or continuation of best selling products, for now it's just more products */}
-      <div className='flex flex-col lg:flex-row justify-center mt-20 w-full max-w-[1400px] m-auto'>
-        {products.slice(7, 11).map((product) => (
+      <div className='flex flex-col lg:flex-row overflow-hidden justify-center mt-20 w-full max-w-[1400px] m-auto'>
+        {products.slice(9, 12).map((product) => (
           <ProductsBanner key={product._id} product={product} />
         ))}
       </div>
@@ -38,10 +37,10 @@ const Home = ( { products, heroBanner, aboutUsBanner, footerBanner, navData, sub
 
 // fetching data from Sanity using a GROQ request and then exporting those props to my home components.
 export const getServerSideProps = async () => {
-  const products = await client.fetch('*[_type == "product"][0...8]');
+  const products = await client.fetch('*[_type == "product"]');
   const heroBanner = await client.fetch('*[_type == "heroBanner"]');
   const footerBanner = await client.fetch('*[_type == "footerBanner"]');
-  const navData = await client.fetch('*[_type == "nav"]{title}');
+  const navData = await client.fetch('*[_type == "nav"]{title, linkUrl, navTile}');
   const aboutUsBanner = await client.fetch('*[_type == "aboutUsBanner"]');
   // I would like to refactor this in the future to be more DRY.
   const subCategoryData = await client.fetch(`
@@ -58,7 +57,6 @@ export const getServerSideProps = async () => {
       }
     }
   `);
-  const aboutUsImg = await client.fetch('*[_type == "aboutUs"][0]{image}');
 
   return {
     props:{products, heroBanner, navData, subCategoryData, footerBanner, aboutUsBanner}

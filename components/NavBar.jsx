@@ -3,14 +3,14 @@ import { AiOutlineShopping } from 'react-icons/ai'
 import { Cart } from './'
 import { useStateContext } from '../context/StateContext'
 import Link from 'next/link'
+import { urlFor } from '../lib/client'
 
 const NavBar = ( { navData, subCategoryData, textColor } ) => {
   const { showCart, setShowCart, totalQuantity } = useStateContext();
   const [mobSlider, setMobSlider] = useState(false);
   const [mobileNav,  setMobileNav] = useState(false);
   const [subMenu, setSubMenu] = useState(false);
-  const mainCategories = navData.map(item => item.title);
-
+  const mainCategories = navData.map(item => [item.title, item.linkUrl, item.navTile]);
 
   return (
     <nav className={`flex px-2 group z-50 h-[80px] border-b-2 border-gray-700 ${textColor} bg-transparent hover:text-black hover:bg-[#c6c3d6] transition-[background] duration-500 relative`}>
@@ -48,23 +48,30 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
         {/* Shopping Bag and Mobile Menu Icon -- Right */}
         <div className="md:flex items-center order-1 hidden w-auto h-full align-middle">
           <ul className="nav-categories flex flex-row h-full mt-0 space-x-8 text-sm font-medium">
-            {mainCategories.map((category, index) => (
-              <li index={index}  onMouseEnter={() => setSubMenu({...subMenu, [index]: !subMenu[index]})} onMouseLeave={() => setSubMenu({...subMenu, [index]: !subMenu[index]})} className={` border-slate-500 flex items-center justify-center w-3/5 h-full py-3 m-auto border-b-2 border-none`}>
-                <a href="#" className="hover:underline text-inherit block p-0 py-2 pl-3 pr-4 text-lg rounded-lg" aria-current="page">
-                  {category}
-                </a>
+            {mainCategories?.map((category, index) => (
+              <li index={index}  onMouseEnter={() => setSubMenu({...subMenu, [index]: !subMenu[index]})} onMouseLeave={() => setSubMenu({...subMenu, [index]: !subMenu[index]})} className={` border-slate-500 flex items-center justify-center w-fit h-full py-3 m-auto border-b-2 border-none`}>
+                <Link href={`/${category[1] ? category[1] : ''}`}>
+                  <a className="hover:underline text-inherit block p-0 py-2 pl-3 pr-4 text-lg rounded-lg" aria-current="page">
+                    {category[0]}
+                  </a>
+                </Link>
                 {/* Currently, this section is hardcoded to only render when category matches Products, in future refactoring, i'd like to make this section more dynamic */}
-                {category == 'Products' && (
+                {category[0] == 'Products' && (
                   <div className={`${subMenu[index] ? 'block' : 'hidden'} z-10 top-[100%] transition-all duration-500 pb-6 absolute left-0 w-screen bg-[#c6c3d6]`}>
                     <div className="text-[#1c1b1b] flex flex-wrap justify-center m-auto">
-                      {subCategoryData[1].navItem.map((item, index) => (
+                      {subCategoryData[1]?.navItem?.map((item, index) => (
                         <div className={`w-fit flex flex-col mx-6 my-6 text-left`}>
                           <h2 index={index} className='mb-2 text-sm tracking-[0.2em] font-extrabold text-gray-600  uppercase'>{item.title}</h2>
                           {item.itemAndLink.link.map((subItem, index) => (
-                            <a index={index} href={subItem.navItemUrl} className='hover:underline my-1 text-base font-normal'>{subItem.subCategory}</a>
+                            <Link href={`/product/${subItem.navItemUrl}`}>
+                              <a index={index} className='hover:underline my-1 text-base font-normal'>{subItem.subCategory}</a>
+                            </Link>
                           ))}
                         </div>
                       ))}
+                      <div className='w-[150px] items-center my-6 ml-8'>
+                        <img className='rounded-lg' src={urlFor(category[2])} alt="" />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -78,15 +85,15 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
       <div className={`${mobileNav ? 'left-0' : '-left-[100%]'} overflow-y-scroll md:hidden transition-all duration-300 fixed uppercase font-light h-screen ease-in-out w-screen z-[100] hover:text-white text-white tracking-[0.2rem]`} >
         {/* Closes modal when user clicks outside of the mobile navigation */}
         <div onClick={() => setMobileNav(false)} className='absolute top-0 right-0 w-2/12 h-screen bg-transparent'></div>
-          <div className='absolute z-20 h-screen w-3/4 bg-[#1c1b1b]'>
+          <div className='absolute z-20 min-h-screen w-3/4 bg-[#1c1b1b]'>
             <button onClick={() => setMobileNav(false)} className='right-5 top-6 absolute'>X</button>
             <ul className="nav-categories h-fit md:h-full flex flex-col mt-10 ml-10">
               {mainCategories.map((category, index) => (
                 <li index={index} className='border-slate-500 flex flex-col w-11/12 h-full py-3 text-white border-b-2'>
                   <h1  onClick={() => setMobSlider({...mobSlider, [index]: !mobSlider[index]})} className="h-fit flex items-center justify-between py-2 pl-3 pr-4 text-lg rounded-lg">
-                    {category}
-                    {/* Again, i'm planning to refactor this snippet, maybe I could add a boolean value in the Sanity schema. Something like "Contains Sub Categories?" if yes, render below */}
-                    {category == 'Products' && (
+                    {category[0]}
+                    {/* Again, i'm planning to refactor this snippet, may be I could add a boolean value in the Sanity schema. Something like "Contains Sub Categories?" if yes, render below */}
+                    {category[0] == 'Products' && (
                       <div class={`circle-plus ${mobSlider[index] ? 'opened' : 'closed'} flex justify-end h-fit`}>
                         <div class="circle">
                           <div class="horizontal"></div>
@@ -97,9 +104,9 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
                   </h1>
 
                   {/* Currently, this section is hardcoded to only render when category matches Products, in future refactoring, i'd like to make this section more dynamic */}
-                  {category == 'Products' && (
+                  {category[0] == 'Products' && (
                     <div className={`justify-center border-l-2  overflow-hidden ml-6 flex flex-wrap m-auto ${mobSlider[index] ? 'max-h-[2000px] visible transition-all border-gray-700 duration-1000 linear' : 'max-h-0  invisible transition-all duration-[700ms] linear'}`} >
-                      {subCategoryData[1].navItem.map((item, index) => (
+                      {subCategoryData[1]?.navItem?.map((item, index) => (
                         <div className='flex flex-col w-full mx-6 text-left border-b-2 border-gray-700'>
                           <h2  onClick={ () => setSubMenu({...subMenu, [index]: !subMenu[index]}) } className='flex justify-between items-center py-6 text-sm tracking-[0.2em] text-[#ffffff7f] uppercase'>
                             {item.title}
@@ -112,7 +119,9 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
                           </h2>
                           <div className={`pl-4 ml-3 flex overflow-hidden flex-col ${subMenu[index] ? 'mb-6 border-l-2 border-gray-600 max-h-96 leading-[100px] visible transition-all duration-500 ease-in-out' : 'border-l-2 max-h-0 leading-0 invisible transition-all duration-500 ease-in-out'} `}>
                             {item.itemAndLink.link.map((subItem, index) => (
-                              <a index={index} href={subItem.navItemUrl} className='hover:underline my-1 text-base font-normal'>{subItem.subCategory}</a>
+                              <Link href={`/product/${subItem.navItemUrl}`}>
+                                <a index={index} className='hover:underline my-1 text-base font-normal'>{subItem.subCategory}</a>
+                              </Link>
                             ))}
                           </div>
                         </div>

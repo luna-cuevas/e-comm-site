@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
 import Footer from './Footer'
-import NavBar from './NavBar'
 
 const Layout = ({children} ) => {
   return (
@@ -9,7 +8,6 @@ const Layout = ({children} ) => {
       <Head>
         <title>Luna's Cauldron</title>
       </Head> 
-      {/* <NavBar navData={navData} subCategoryData={subCategoryData} /> */}
       <main>
         {children}  
       </main>
