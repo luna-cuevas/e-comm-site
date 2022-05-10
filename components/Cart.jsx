@@ -73,7 +73,7 @@ const Cart = () => {
             <div className='flex gap-[30px] p-5' key={item._id}>
               <img src={urlFor(item?.image[0])} className='h-1/4 w-1/4 md:h-[150px] md:w-[180px] bg-[#ebebeb] rounded-2xl' alt="" />
               <div className='justify-evenly h-fit flex flex-col'>
-                <div className='flex justify-between w-[200px] md:w-[350px] text-white'>
+                <div className='flex justify-between w-[200px] md:w-[300px] text-white'>
                     <h5 className=''>
                       {item.name}
                     </h5>
