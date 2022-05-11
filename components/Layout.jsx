@@ -4,7 +4,7 @@ import Footer from './Footer'
 
 const Layout = ({children} ) => {
   return (
-    <div className='overflow-hidden font-["Montserrat"]'>
+    <div className='font-Montserrat  overflow-hidden'>
       <Head>
         <title>Luna's Cauldron</title>
       </Head> 
