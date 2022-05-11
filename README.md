@@ -1,23 +1,87 @@
-# Next.js + Tailwind CSS Example
+## Table of contents
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+- [Overview](#overview)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+- [Acknowledgments](#acknowledgments)
 
-## Deploy your own
+## Overview
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+### Screenshot
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+![](./public/luna-cauldron.png)
 
-## How to use
+### Links
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+- Live Site URL: [Demo](https://lunas-cauldron.vercel.app/)
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-# or
-pnpm create next-app -- --example with-tailwindcss with-tailwindcss-app
+## My process
+
+Starting off, I loosely followed a tutorial on Sanity by Javascript Mastery on Youtube which helped me through the initial sanity Schema building. I learned that Sanity's Content Lake can be a powerful headless CMS that I can then connect to my app by using GROQ and GraphQL queries.
+
+After fetching data from Sanity, I then pass the data down to the different components that need it like the NavBar, FooterBanner, HeroBanner, ProductBanner, and Product components. The power of NextJs allowed me to retrieve this data from the server meaning that the data loads almost instantaneously.
+
+A lot of my time was spent on ensuring that the site template was fully mobile and tablet responsive. In future iterations of this project, I want to add a dark mode button so that client's have that option if they need it.
+
+I also want to add Shopify order management to this project but currently a monthly premium service for Shopify if $29.99 so I will wait until I work with a client that needs this functionality. Until then, I think users can gather shipping information through Stripe.
+
+### Built with
+
+- Semantic HTML5 markup
+- CSS custom properties
+- Flexbox
+- Mobile-first workflow
+- [React](https://reactjs.org/) - JS library
+- [Next.js](https://nextjs.org/) - React framework
+- [TailwindCSS](https://tailwindcss.com/) - For styles
+- [Stripe](https://stripe.com/) - For Payment
+
+### What I learned
+
+I learned that Sanity uses their own interpretation of the GraphQL language called GROQ which is similar but more powerful than standard queries because it allows the developer more control over the data queried.
+
+Also learned that e-commerce applications are relatively simple. It's a main home page with different sections and products, and then a Product Details Page that features the product selected, and lastly there's a checkout page with optional Success notifications. Everything beyond that tends to be needed for analytics, customer service, and business analytical tools.
+
+```js
+
+I wanted to highlight the way GROQ queries work.
+
+export const getServerSideProps = async () => {
+  const products = await client.fetch('*[_type == "product"]');
+  const heroBanner = await client.fetch('*[_type == "heroBanner"]');
+  const footerBanner = await client.fetch('*[_type == "footerBanner"]');
+  const navData = await client.fetch('*[_type == "nav"]{title, linkUrl, navTile}');
+  const aboutUsBanner = await client.fetch('*[_type == "aboutUsBanner"]');
+  const subCategoryData = await client.fetch(`
+    *[_type == "nav"] {
+      title,
+      navItem[] {
+        title,
+        itemAndLink {
+          link[]{
+            subCategory,
+            navItemUrl
+          }
+        }
+      }
+    }
+  `);
+
+  return {
+    props:{products, heroBanner, navData, subCategoryData, footerBanner, aboutUsBanner}
+  }
+}
+
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+### Continued development
+
+I want to possibly integrate Shopify and Shipstation to increase the scalability of this template but both these technologies have a steep monthly premium so it will have to wait.
+
+## Acknowledgments
+
+Thanks to Flowbite for providing a library of responsive and customizable Tailwind solutions and to Javascript Mastery on Youtube for helping me understand Sanity.io.
