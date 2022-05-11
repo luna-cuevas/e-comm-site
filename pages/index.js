@@ -30,7 +30,7 @@ const Home = ( { products, heroBanner, aboutUsBanner, footerBanner, navData, sub
         )}
       </div>
       {/* Best selling categories or continuation of best selling products, for now it's just more products */}
-      <div className='flex flex-col lg:flex-row overflow-hidden justify-center mt-20 w-full max-w-[1400px] m-auto'>
+      <div className='flex flex-col lg:flex-row overflow-hidden justify-center h-fit mt-20 w-full max-w-[1400px] m-auto'>
         {products.slice(9, 12).map((product) => (
           <ProductsBanner key={product._id} product={product} />
         ))}

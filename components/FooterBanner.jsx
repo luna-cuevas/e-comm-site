@@ -15,7 +15,7 @@ const FooterBanner = ( { footerBanner: { bannerText, product, productTitle, pric
             <h1 className='text-[18px] my-6'>{productTitle}</h1>
             <p>${price}</p>
           </div>
-          <Link href={`/products/${product}`}>
+          <Link href={`/product/${product}`}>
             <button type='button' className='hover:bg-purple-800 w-[200px] m-auto transition-all duration-300 rounded-2xl p-3 bg-[#745da7]'>
               Shop Now
             </button>

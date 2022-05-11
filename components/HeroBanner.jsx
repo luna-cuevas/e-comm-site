@@ -8,7 +8,7 @@ const HeroBanner = ( { heroBanner: { tagline, aboveTagline} } ) => {
         <p>{aboveTagline}</p>
         <h1 className="text-3xl uppercase font-thin md:font-normal tracking-[0.2em]">{tagline}</h1>
         <div>
-          <Link href={`/products`}>
+          <Link href={`/`}>
             <button type="button" className='transition-all duration-300 hover:bg-purple-800 rounded-2xl p-3 mt-5 bg-[#745da7]'>Shop Now</button>
           </Link>
         </div>

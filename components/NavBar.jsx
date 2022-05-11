@@ -91,7 +91,13 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
               {mainCategories.map((category, index) => (
                 <li key={index} className='border-slate-500 flex flex-col w-11/12 h-full py-3 text-white border-b-2'>
                   <h1 index={index} onClick={() => setMobSlider({...mobSlider, [index]: !mobSlider[index]})} className="h-fit flex items-center justify-between py-2 pl-3 pr-4 text-lg rounded-lg">
-                    {category[0]}
+                    {category[0] == 'Products' ? 
+                      category[0]
+                      : 
+                      <Link href={`/${category[1] ? category[1] : ''}`}>
+                        {category[0]}
+                      </Link>                    
+                    }
                     {/* Again, i'm planning to refactor this snippet, may be I could add a boolean value in the Sanity schema. Something like "Contains Sub Categories?" if yes, render below */}
                     {category[0] == 'Products' && (
                       <div key={index} className={`circle-plus ${mobSlider[index] ? 'opened' : 'closed'} flex justify-end h-fit`}>
