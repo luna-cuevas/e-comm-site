@@ -1,9 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { Product, FooterBanner, HeroBanner, NavBar, ProductsBanner, AboutUsBlurb } from '../components/index'
 import { client, urlFor } from '../lib/client'
 
 const Home = ( { products, heroBanner, aboutUsBanner, footerBanner, navData, subCategoryData } ) => {
-console.log(urlFor(heroBanner[0].bgImageMobile))
   return (
     <div>
       <NavBar textColor={'text-white'} navData={navData} subCategoryData={subCategoryData} />
@@ -13,7 +13,7 @@ console.log(urlFor(heroBanner[0].bgImageMobile))
           <Image layout='fill' priority src={urlFor(heroBanner[0].bgImageDesktop)} className='min-w-[1440px] w-screen opacity-50' alt="" />
         </div>
         <div className='-z-10 md:hidden min-w-max absolute top-0 w-screen h-screen overflow-hidden bg-black'>
-          <Image layout='fill' blur loading='lazy' src={urlFor(heroBanner[0].bgImageMobile)} className='opacity-50' alt="" />
+          <Image layout='fill' blur='true' loading='lazy' src={urlFor(heroBanner[0].bgImageMobile)} className='opacity-50' alt="" />
         </div>
       </div>
       <div className='mx-0 my-10 text-center text-white'>
@@ -21,8 +21,12 @@ console.log(urlFor(heroBanner[0].bgImageMobile))
       </div>
       {/* Where the top 8 best selling products are featured */}
       <div className='flex flex-wrap justify-center mt-5 w-full max-w-[1400px] m-auto'>
-        {products?.slice(0, 8).map((product) => 
-          <Product key={product._id} product={product} />
+        {products?.slice(0, 8).map((product, index) =>
+          <Link key={index} href={`/product/${product.slug.current}`} >
+            <a>
+              <Product key={product._id} product={product} />
+            </a>
+          </Link>
         )}
       </div>
       {/* Best selling categories or continuation of best selling products, for now it's just more products */}

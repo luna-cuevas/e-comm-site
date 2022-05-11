@@ -20,9 +20,6 @@ export const StateContext = ({children}) => {
   //   console.log(cartItems)
   // },[cartItems]);
 
-  // console.log(cartItems)
-
-
   let foundProduct;
 
   const incrementQty = () => {

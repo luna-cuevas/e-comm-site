@@ -7,3 +7,4 @@ export { default as FooterBanner } from './FooterBanner';
 export { default as Cart } from './Cart';
 export { default as ProductsBanner } from './ProductsBanner';
 export { default as AboutUsBlurb } from './AboutUsBlurb';
+export { default as Carousel } from './PDP/Carousel';

@@ -4,7 +4,7 @@ import Product from '../../components/Product'
 import { useState } from 'react'
 import { useStateContext } from '../../context/StateContext'
 import { NavBar } from '../../components'
-import Carousel, { CarouselItem } from "../../components/Carousel";
+import Carousel, { CarouselItem } from "../../components/PDP/Carousel";
 
 
 const ProductDetails = ({ product, products, navData, subCategoryData }) => {
@@ -32,7 +32,7 @@ const ProductDetails = ({ product, products, navData, subCategoryData }) => {
       {/* Mobile product image slider */}
       <Carousel>
         {image?.map((item, i) => 
-            (<CarouselItem>
+            (<CarouselItem key={i}>
               <img
                 key={i} 
                 src={urlFor(item)} 

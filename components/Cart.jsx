@@ -8,7 +8,6 @@ import { urlFor } from '../lib/client'
 import getStripe from  '../lib/getStripe';
 
 const Cart = () => {
-  const cartRef = useRef()
   const { totalPrice, totalQuantity, cartItems, setShowCart, updateCartItemQty, removeFromCart, showCart } = useStateContext()
 
   const handleCheckout = async () => {
@@ -42,7 +41,7 @@ const Cart = () => {
   }
   
   return (
-    <div className={`${showCart ? 'right-0' : 'right-[-100%]'} text-white z-[100] w-screen md:w-fit fixed top-0 transition-all duration-500 ease-in-out`} ref={cartRef}>
+    <div className={`${showCart ? 'right-0' : 'right-[-100%]'} text-white z-[100] w-screen md:w-fit fixed top-0 transition-all duration-500 ease-in-out`}>
       {/* Created an underlay? that sits under the cart menu. If user clicks outside cart, cart modal closes */}
       <div onClick={() => setShowCart(false)} className='absolute top-0 left-0 w-screen h-screen bg-transparent'></div>
       <div className={`h-screen w-10/12 md:w-[600px] right-0 bg-[#1c1b1b] md:py-[40px] md:px-[10px] p-1 absolute`}>
