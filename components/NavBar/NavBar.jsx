@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { AiOutlineShopping } from 'react-icons/ai'
-import { Cart } from './'
-import { useStateContext } from '../context/StateContext'
+import { Cart } from '..'
+import { useStateContext } from '../../context/StateContext'
 import Link from 'next/link'
-import { urlFor } from '../lib/client'
+import { urlFor } from '../../lib/client'
 
 const NavBar = ( { navData, subCategoryData, textColor } ) => {
   const { showCart, setShowCart, totalQuantity } = useStateContext();
@@ -13,7 +13,7 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
   const mainCategories = navData.map(item => [item.title, item.linkUrl, item.navTile]);
 
   return (
-    <nav className={`flex px-2 group z-50 h-[80px] border-b-2 border-gray-700 ${textColor} bg-transparent hover:text-black hover:bg-[#c6c3d6] transition-[background] duration-500 relative`}>
+    <nav data-testid='NavBar' className={`flex px-2 group z-50 h-[80px] border-b-2 border-gray-700 ${textColor} bg-transparent hover:text-black hover:bg-[#c6c3d6] transition-[background] duration-500 relative`}>
       {/* <--------------------- Desktop Menu ---------------------> */}
       <div className="container flex flex-wrap items-center justify-between mx-auto">
 
@@ -47,7 +47,7 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
         
         {/* Shopping Bag and Mobile Menu Icon -- Right */}
         <div className="md:flex items-center order-1 hidden w-auto h-full align-middle">
-          <ul className="nav-categories flex flex-row h-full mt-0 space-x-8 text-sm font-medium">
+          <ul data-testid="NavBar-links" className="nav-categories flex flex-row h-full mt-0 space-x-8 text-sm font-medium">
             {mainCategories?.map((category, index) => (
               <li key={index}  onMouseEnter={() => setSubMenu({...subMenu, [index]: !subMenu[index]})} onMouseLeave={() => setSubMenu({...subMenu, [index]: !subMenu[index]})} className={` border-slate-500 flex items-center justify-center w-fit h-full py-3 m-auto border-b-2 border-none`}>
                 <Link key={index} href={`/${category[1] ? category[1] : ''}`}>
@@ -58,7 +58,7 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
                 {/* Currently, this section is hardcoded to only render when category matches Products, in future refactoring, i'd like to make this section more dynamic */}
                 {category[0] == 'Products' && (
                   <div className={`${subMenu[index] ? 'block' : 'hidden'} z-10 top-[100%] transition-all duration-500 pb-6 absolute left-0 w-screen bg-[#c6c3d6]`}>
-                    <div className="text-[#1c1b1b] flex flex-wrap justify-center m-auto">
+                    <div data-testid="NavBar-subcategories-desktop" className="text-[#1c1b1b] flex flex-wrap justify-center m-auto">
                       {subCategoryData[1]?.navItem?.map((item, index) => (
                         <div key={index} className={`w-fit flex flex-col mx-6 my-6 text-left`}>
                           <h2 index={index} className='mb-2 text-sm tracking-[0.2em] font-extrabold text-gray-600  uppercase'>{item.title}</h2>
@@ -111,7 +111,7 @@ const NavBar = ( { navData, subCategoryData, textColor } ) => {
 
                   {/* Currently, this section is hardcoded to only render when category matches Products, in future refactoring, i'd like to make this section more dynamic */}
                   {category[0] == 'Products' && (
-                    <div key={index} className={`justify-center border-l-2  overflow-hidden ml-6 flex flex-wrap m-auto ${mobSlider[index] ? 'max-h-[2000px] visible transition-all border-gray-700 duration-1000 linear' : 'max-h-0  invisible transition-all duration-[700ms] linear'}`} >
+                    <div data-testid="NavBar-subcategories-mobile" key={index} className={`justify-center border-l-2  overflow-hidden ml-6 flex flex-wrap m-auto ${mobSlider[index] ? 'max-h-[2000px] visible transition-all border-gray-700 duration-1000 linear' : 'max-h-0  invisible transition-all duration-[700ms] linear'}`} >
                       {subCategoryData[1]?.navItem?.map((item, index) => (
                         <div key={index} className='flex flex-col w-full mx-6 text-left border-b-2 border-gray-700'>
                           <h2 index={index} onClick={ () => setSubMenu({...subMenu, [index]: !subMenu[index]}) } className='flex justify-between items-center py-6 text-sm tracking-[0.2em] text-[#ffffff7f] uppercase'>

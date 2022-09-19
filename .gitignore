@@ -10,6 +10,7 @@ node_modules
 
 # testing
 /coverage
+.jest/setEnvVars.js
 
 # next.js
 /.next/

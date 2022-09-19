@@ -1,92 +1,124 @@
 import { client, urlFor } from '../../lib/client'
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
-import Product from '../../components/Product'
+import { Product } from '../.././components/index'
 import { useState } from 'react'
 import { useStateContext } from '../../context/StateContext'
 import { NavBar } from '../../components'
-import Carousel, { CarouselItem } from "../../components/PDP/Carousel";
-
+import Carousel, { CarouselItem } from '../../components/PDP/Carousel'
 
 const ProductDetails = ({ product, products, navData, subCategoryData }) => {
-  
-  const { 
-    decrementQty, 
-    incrementQty, 
-    qty, 
-    addToCart, 
-    setShowCart } = useStateContext()
-    
-  const { image, name, details, price } = product;
+  const { decrementQty, incrementQty, qty, addToCart, setShowCart } =
+    useStateContext()
+
+  const { image, name, details, price } = product
   // const [ index, setIndex ] = useState(0)
 
   const handleBuyNow = () => {
-    addToCart(product, qty);
-    setShowCart(true);
+    addToCart(product, qty)
+    setShowCart(true)
   }
 
   return (
-    <div className='mt-[80px] md:mt-[100px] relative text-white'>
-      <div className='w-screen h-[80px] md:h-[80px] bg-[#c6c3d6] fixed top-0 z-20'>
-        <NavBar textColor={'text-black'} navData={navData} subCategoryData={subCategoryData} />
+    <div
+      data-testid="ProductDetails"
+      className="relative mt-[80px] text-white md:mt-[100px]"
+    >
+      <div className="fixed top-0 z-20 h-[80px] w-screen bg-[#c6c3d6] md:h-[80px]">
+        <NavBar
+          textColor={'text-black'}
+          navData={navData}
+          subCategoryData={subCategoryData}
+        />
       </div>
       {/* Mobile product image slider */}
-      <Carousel>
-        {image?.map((item, i) => 
-            (<CarouselItem key={i}>
+      <div data-testid="product-image-mobile">
+        <Carousel>
+          {image?.map((item, i) => (
+            <CarouselItem key={i}>
               <img
-                key={i} 
-                src={urlFor(item)} 
-                className='bg-[#ebebeb] m-auto' 
-                alt="Product photo" 
+                key={i}
+                src={urlFor(item)}
+                className="m-auto bg-[#ebebeb]"
+                alt="Product photo"
               />
-            </CarouselItem>)
-          )}
-      </Carousel>
-      
+            </CarouselItem>
+          ))}
+        </Carousel>
+      </div>
+
       {/* Desktop product image list */}
-      <div className='flex max-w-[1400px] md:flex-row flex-col pt-14 justify-between w-10/12 m-auto'>
-        <div className='md:w-1/2'>
-          <div className='md:block justify-center hidden h-screen overflow-y-scroll'>
+      <div className="m-auto flex w-10/12 max-w-[1400px] flex-col justify-between pt-14 md:flex-row">
+        <div className="md:w-1/2">
+          <div
+            data-testid="product-image-desktop"
+            className="md:block justify-center hidden h-screen overflow-y-scroll"
+          >
             {/* <img src={urlFor(image && image[index])} className='product-detail-image' alt="" /> */}
-            {image?.map((item, i) => 
-              (<img
-                key={i} 
-                src={urlFor(item)} 
-                className='mb-20 rounded-2xl bg-[#ebebeb] m-auto w-9/12' 
+            {image?.map((item, i) => (
+              <img
+                key={i}
+                src={urlFor(item)}
+                className="m-auto mb-20 w-9/12 rounded-2xl bg-[#ebebeb]"
                 // onMouseEnter={() => setIndex(i)}
-                alt="" 
-              />)
-            )}
+                alt=""
+              />
+            ))}
           </div>
         </div>
-          
-        <div className=" md:w-5/12 md:overflow-y-scroll md:h-screen top-0">
-          <h1 className='text-[18px] ml-6 text-[#c6c3d6] font-light uppercase tracking-[0.2rem]'>{name}</h1>
+
+        <div className=" md:h-screen md:w-5/12 md:overflow-y-scroll top-0">
+          <h1 className="ml-6 text-[18px] font-light uppercase tracking-[0.2rem] text-[#c6c3d6]">
+            {name}
+          </h1>
           <p className="my-4 ml-6 text-xl">${price}</p>
           <div className="flex flex-col ml-6">
-            <h3 className='my-3'>Quantity:</h3>
-            <p className="w-fit flex border-[1px] border-gray-600 items-center">
-              <span className="px-5 py-3 m-auto font-extrabold text-[#ff0000] scale-100 hover:scale-110 ease duration-300 cursor-pointer" onClick={decrementQty}><AiOutlineMinus /></span>
+            <h3 className="my-3">Quantity:</h3>
+            <p className="flex w-fit items-center border-[1px] border-gray-600">
+              <span
+                className="ease m-auto scale-100 cursor-pointer px-5 py-3 font-extrabold text-[#ff0000] duration-300 hover:scale-110"
+                onClick={decrementQty}
+              >
+                <AiOutlineMinus />
+              </span>
               <span className="px-5">{qty}</span>
-              <span className="px-5 py-3 m-auto cursor-pointer text-[#4cf326]" onClick={incrementQty}><AiOutlinePlus /></span>
+              <span
+                className="m-auto cursor-pointer px-5 py-3 text-[#4cf326]"
+                onClick={incrementQty}
+              >
+                <AiOutlinePlus />
+              </span>
             </p>
           </div>
           <div className="flex flex-col justify-around">
-            <button type="button" className="py-[10px] px-[20px] w-11/12 m-auto hover:scale-110 border-[1px] mt-[40px] text-white cursor-pointer scale-100 duration-500 ease bg-[#745da7]" onClick={() => addToCart(product, qty)}>Add to Cart</button>
-            <button type="button" className="py-[10px] px-[20px] hover:scale-110 border-[1px] mt-[10px] text-white cursor-pointer w-11/12 m-auto scale-100 duration-500 ease bg-[#9e1b20]" onClick={() => handleBuyNow(product, qty)}>Buy Now</button>
+            <button
+              type="button"
+              className="ease m-auto mt-[40px] w-11/12 scale-100 cursor-pointer border-[1px] bg-[#745da7] py-[10px] px-[20px] text-white duration-500 hover:scale-110"
+              onClick={() => addToCart(product, qty)}
+            >
+              Add to Cart
+            </button>
+            <button
+              type="button"
+              className="ease m-auto mt-[10px] w-11/12 scale-100 cursor-pointer border-[1px] bg-[#9e1b20] py-[10px] px-[20px] text-white duration-500 hover:scale-110"
+              onClick={() => handleBuyNow(product, qty)}
+            >
+              Buy Now
+            </button>
           </div>
 
-          <div className='flex flex-col gap-4 m-auto ml-6 font-light'>
-            <h4 className='mt-10 font-bold'>Details:</h4>
+          <div className="flex flex-col gap-4 m-auto ml-6 font-light">
+            <h4 className="mt-10 font-bold">Details:</h4>
             <p>{details}</p>
           </div>
         </div>
       </div>
-      <div className='mt-[120px]'>
-        <h2 className='text-center m-12 text-[28px]'>You may also like</h2>
-        <div className='relative h-[400px] font-semibold my-[60px] mx-0 overflow-hidden'>
-          <div className=' w-[550px] flex justify-center mt-4 track'>
-            {products?.map((item) => (<Product key={item._id} product={item} />))}              
+      <div className="mt-[120px]">
+        <h2 className="m-12 text-center text-[28px]">You may also like</h2>
+        <div className="relative my-[60px] mx-0 h-[400px] overflow-hidden font-semibold">
+          <div className=" track mt-4 flex w-[550px] justify-center">
+            {products?.map((item) => (
+              <Product key={item._id} product={item} />
+            ))}
           </div>
         </div>
       </div>
@@ -99,28 +131,29 @@ export const getStaticPaths = async () => {
     slug {
       current
     }
-  }`;
-  const products = await client.fetch(query);
+  }`
+  const products = await client.fetch(query)
   const paths = products.map((product) => ({
     params: {
-      slug: product.slug.current
-    }
-  })
-  );
+      slug: product.slug.current,
+    },
+  }))
 
   return {
     paths,
-    fallback: false
+    fallback: false,
   }
 }
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-  const productsQuery = `*[_type == "product"]`;
-  const product = await client.fetch(query);
-  const products = await client.fetch(productsQuery);
+  const query = `*[_type == "product" && slug.current == '${slug}'][0]`
+  const productsQuery = `*[_type == "product"]`
+  const product = await client.fetch(query)
+  const products = await client.fetch(productsQuery)
 
-  const navData = await client.fetch('*[_type == "nav"]{title, linkUrl, navTile}');
+  const navData = await client.fetch(
+    '*[_type == "nav"]{title, linkUrl, navTile}'
+  )
   const subCategoryData = await client.fetch(`
     *[_type == "nav"] {
       title,
@@ -134,10 +167,10 @@ export const getStaticProps = async ({ params: { slug } }) => {
         }
       }
     }
-  `);
+  `)
 
   return {
-    props:{ products, product, navData, subCategoryData }
+    props: { products, product, navData, subCategoryData },
   }
 }
 
