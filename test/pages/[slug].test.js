@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import ProductDetails from './[slug]'
-import { products } from '../.././test/pages/index.mock'
+import ProductDetails from '../../pages/product/[slug]'
+import { products } from './index.mock'
 import { navData, subCategoryData } from '../../components/NavBar/NavBar.mock'
 import { StateContext } from '../../context/StateContext'
 

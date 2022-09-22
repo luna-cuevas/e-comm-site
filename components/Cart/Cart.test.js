@@ -9,16 +9,16 @@ import {
 } from '../../context/StateContext'
 import { products } from '../.././test/pages/index.mock'
 
-test('Cart should be rendered', () => {
-  render(
-    <StateContext addToCart={() => addToCart(products[0], 1)}>
-      <Cart />
-    </StateContext>
-  )
+// test('Cart should be rendered', () => {
+//   render(
+//     <StateContext addToCart={() => addToCart(products[0], 1)}>
+//       <Cart />
+//     </StateContext>
+//   )
 
-  const cart = screen.getByTestId('cart-quantity')
-  expect(cart).toBeInTheDocument()
-})
+//   const cart = screen.getByTestId('cart-quantity')
+//   expect(cart).toBeInTheDocument()
+// })
 
 // test('clicking the button toggles an answer on/off', () => {
 //   render(
