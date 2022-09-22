@@ -1,7 +1,6 @@
 import { client, urlFor } from '../../lib/client'
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 import { Product } from '../.././components/index'
-import { useState } from 'react'
 import { useStateContext } from '../../context/StateContext'
 import { NavBar } from '../../components'
 import Carousel, { CarouselItem } from '../../components/PDP/Carousel'
@@ -9,9 +8,7 @@ import Carousel, { CarouselItem } from '../../components/PDP/Carousel'
 const ProductDetails = ({ product, products, navData, subCategoryData }) => {
   const { decrementQty, incrementQty, qty, addToCart, setShowCart } =
     useStateContext()
-
   const { image, name, details, price } = product
-  // const [ index, setIndex ] = useState(0)
 
   const handleBuyNow = () => {
     addToCart(product, qty)

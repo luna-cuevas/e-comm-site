@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineShopping, } from 'react-icons/ai'
 import { TiDeleteOutline } from 'react-icons/ti'
 import toast from 'react-hot-toast'
-import { useStateContext } from '../context/StateContext'
-import { urlFor } from '../lib/client'
-import getStripe from  '../lib/getStripe';
+import { useStateContext } from '../../context/StateContext'
+import { urlFor } from '../../lib/client'
+import getStripe from  '../../lib/getStripe';
 
 const Cart = () => {
   const { totalPrice, totalQuantity, cartItems, setShowCart, updateCartItemQty, removeFromCart, showCart } = useStateContext()
@@ -41,7 +41,7 @@ const Cart = () => {
   }
   
   return (
-    <div className={`${showCart ? 'right-0' : 'right-[-100%]'} text-white z-[100] w-screen md:w-fit fixed top-0 transition-all duration-500 ease-in-out`}>
+    <div data-testid='cart' className={`${showCart ? 'right-0' : 'right-[-100%]'} text-white z-[100] w-screen md:w-fit fixed top-0 transition-all duration-500 ease-in-out`}>
       {/* Created an underlay? that sits under the cart menu. If user clicks outside cart, cart modal closes */}
       <div onClick={() => setShowCart(false)} className='absolute top-0 left-0 w-screen h-screen bg-transparent'></div>
       <div className={`h-screen w-10/12 md:w-[600px] right-0 bg-[#1c1b1b] md:py-[40px] md:px-[10px] p-1 absolute`}>
@@ -73,16 +73,14 @@ const Cart = () => {
               <img src={urlFor(item?.image[0])} className='h-1/4 w-1/4 md:h-[150px] md:w-[180px] bg-[#ebebeb] rounded-2xl' alt="" />
               <div className='justify-evenly h-fit flex flex-col'>
                 <div className='flex justify-between w-[200px] md:w-[300px] text-white'>
-                    <h5 className=''>
-                      {item.name}
-                    </h5>
+                    <h5>{item.name}</h5>
                     <h4>$ {item.price}</h4>
                 </div>
                 <div className='flex mt-[30px] justify-between md:mt-[60px]'>
                   <div>
                     <p className="w-fit  border-[1px] p-1.5 text-base border-gray-200 flex">
                       <button className="md:py-2.5 md:px-3 px-2 cursor-pointer m-auto text-[#f02d34]" onClick={() => updateCartItemQty(item._id, 'decrement')}><AiOutlineMinus /></button>
-                      <span className="md:px-3 md:py-3 px-2 m-auto cursor-pointer">{item.quantity}</span>
+                      <span data-testid="cart-quantity" className="md:px-3 md:py-3 px-2 m-auto cursor-pointer">{item.quantity}</span>
                       <button className="md:py-2.5 md:px-3 px-2 cursor-pointer m-auto text-[#0f7121]" onClick={() => updateCartItemQty(item._id, 'increment')}><AiOutlinePlus /></button>
                     </p>
                   </div>
