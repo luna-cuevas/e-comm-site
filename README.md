@@ -27,8 +27,6 @@ After fetching data from Sanity, I then pass the data down to the different comp
 
 A lot of my time was spent on ensuring that the site template was fully mobile and tablet responsive. In future iterations of this project, I want to add a dark mode button so that client's have that option if they need it.
 
-I also want to add Shopify order management to this project but currently a monthly premium service for Shopify if $29.99 so I will wait until I work with a client that needs this functionality. Until then, I think users can gather shipping information through Stripe.
-
 ### Built with
 
 - Semantic HTML5 markup
